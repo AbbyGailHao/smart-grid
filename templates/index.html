@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Electricity Monitor - Localhost DB Viewer</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background-color: #f4f7f6; color: #333; }
+        h1 { color: #2c3e50; }
+        h2 { color: #34495e; border-bottom: 2px solid #bdc3c7; padding-bottom: 5px; margin-top: 40px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #2980b9; color: white; }
+        tr:hover { background-color: #f1f1f1; }
+        .container { max-width: 1200px; margin: auto; }
+        .badge { background: #27ae60; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>? Household Electricity Consumption Monitor</h1>
+    <p>Connected to SQLite Database: <code>{{ db_name }}</code> via Localhost</p>
+
+    <h2>Households Table</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Account Number</th>
+            <th>Homeowner Name</th>
+            <th>Address</th>
+            <th>Connection Type</th>
+        </tr>
+        {% for row in households %}
+        <tr>
+            <td>{{ row['household_id'] }}</td>
+            <td><strong>{{ row['account_number'] }}</strong></td>
+            <td>{{ row['homeowner_name'] }}</td>
+            <td>{{ row['address'] }}</td>
+            <td><span class="badge">{{ row['connection_type'] }}</span></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Meter Readings Table (Joined with Households)</h2>
+    <table>
+        <tr>
+            <th>Reading ID</th>
+            <th>Account</th>
+            <th>Homeowner</th>
+            <th>Billing Period</th>
+            <th>Prev (kWh)</th>
+            <th>Curr (kWh)</th>
+            <th>Consumption (kWh)</th>
+            <th>Rate (?/kWh)</th>
+            <th>Est. Cost (?)</th>
+            <th>Date</th>
+        </tr>
+        {% for row in readings %}
+        <tr>
+            <td>{{ row['reading_id'] }}</td>
+            <td><strong>{{ row['account_number'] }}</strong></td>
+            <td>{{ row['homeowner_name'] }}</td>
+            <td>{{ row['billing_period'] }}</td>
+            <td>{{ row['previous_reading'] }}</td>
+            <td>{{ row['current_reading'] }}</td>
+            <td><strong>{{ row['consumption_kwh'] }}</strong></td>
+            <td>?{{ row['rate_per_kwh'] }}</td>
+            <td><strong>?{{ "%.2f"|format(row['estimated_cost']) }}</strong></td>
+            <td>{{ row['reading_date'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
