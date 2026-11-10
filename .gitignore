@@ -1,4 +1,17 @@
+# Python bytecode and virtual environments
 __pycache__/
 .venv/
 *.pyc
-electricity_monitor.db
+
+# Local Databases
+*.db
+*.sqlite3
+smart_grid.db
+
+# Exported Reports and Visuals
+*.html
+*.pdf
+*.png
+reports_output/
+hide/*.png
+hide/*.pdf
